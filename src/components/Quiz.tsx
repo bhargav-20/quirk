@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Likert, QuizResult } from '../types'
 import { QUESTIONS } from '../data/questions'
 import { scoreAnswers } from '../lib/scoring'
+import { loadProgress, saveProgress } from '../lib/storage'
 import { QuestionCard } from './QuestionCard'
 import { ProgressJourney } from './ProgressJourney'
 
@@ -18,13 +19,23 @@ const variants = {
 }
 
 export function Quiz({ onComplete, onExit }: Props) {
-  const [index, setIndex] = useState(0)
+  // Resume from persisted progress if the user reloaded mid-quiz. App clears the
+  // saved progress before mounting a fresh run, so this is 0/{} for a new quiz.
+  const saved = useRef(loadProgress())
+  const [index, setIndex] = useState(() => saved.current?.index ?? 0)
   const [direction, setDirection] = useState(1)
-  const [answers, setAnswers] = useState<Record<number, Likert>>({})
+  const [answers, setAnswers] = useState<Record<number, Likert>>(
+    () => saved.current?.answers ?? {},
+  )
 
   // Guards against a fast double-tap queueing two advances (which would push
   // `index` past the last question). Reset once the next card is in place.
   const advancing = useRef(false)
+
+  // Persist progress on every step so a reload resumes exactly here.
+  useEffect(() => {
+    saveProgress({ index, answers })
+  }, [index, answers])
 
   const question = QUESTIONS[index]
   const isLast = index === QUESTIONS.length - 1

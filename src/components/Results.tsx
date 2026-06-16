@@ -10,17 +10,25 @@ import { DISCLAIMER_SHORT } from '../data/disclaimer'
 interface Props {
   result: QuizResult
   onRetake: () => void
+  onHome: () => void
   onShowDisclaimer: () => void
   shared?: boolean
 }
 
-export function Results({ result, onRetake, onShowDisclaimer, shared }: Props) {
+export function Results({ result, onRetake, onHome, onShowDisclaimer, shared }: Props) {
   const profile = PROFILES[result.type]
   const [shareOpen, setShareOpen] = useState(false)
 
   return (
     <div className="safe-x safe-y relative mx-auto w-full max-w-2xl [--sy:2.5rem]">
       <Confetti />
+
+      <button
+        onClick={onHome}
+        className="ring-fun font-display absolute left-4 top-4 z-10 rounded-full bg-white/80 px-4 py-2 text-sm font-extrabold text-grape shadow-sm transition hover:bg-white"
+      >
+        ✦ Quirk
+      </button>
 
       {/* Hero reveal */}
       <div
