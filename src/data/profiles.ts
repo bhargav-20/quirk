@@ -1,0 +1,218 @@
+import type { TypeProfile } from '../types'
+
+// All profile copy is original, Claude-generated content written for Quirk.
+// Nicknames are our own playful inventions and are not the official type names of
+// any personality system. For entertainment only — see data/disclaimer.ts.
+
+export const PROFILES: Record<string, TypeProfile> = {
+  INTJ: {
+    code: 'INTJ',
+    nickname: 'The Mastermind Owl',
+    emoji: '🦉',
+    tagline: 'Three steps ahead, quietly running the simulation.',
+    gradient: ['#7c5cff', '#2b1840'],
+    blurb:
+      'You see the whole chessboard while everyone else is still finding their pieces. Independent, strategic, and allergic to wasted effort, you build long-range plans and quietly make them happen.',
+    strengths: ['Long-term strategic vision', 'Fiercely independent', 'Cuts straight to what matters'],
+    blindSpots: ['Can dismiss feelings as inefficiencies', 'Impatient with small talk'],
+    growth: ['Share the plan before executing it', 'Let "good enough" be enough sometimes'],
+    compatible: ['ENFP', 'ENTP', 'INFJ'],
+  },
+  INTP: {
+    code: 'INTP',
+    nickname: 'The Curious Tinkerer',
+    emoji: '🔭',
+    tagline: 'Forever opening the next "why?" like a nesting doll.',
+    gradient: ['#4cc9ff', '#7c5cff'],
+    blurb:
+      'Your mind is a workshop of theories, half-built ideas, and elegant little "what ifs." You chase understanding for its own sake and light up at a genuinely interesting problem.',
+    strengths: ['Original, flexible thinker', 'Spots logical flaws instantly', 'Endlessly curious'],
+    blindSpots: ['Ideas outpace follow-through', 'Can over-analyze simple choices'],
+    growth: ['Ship the idea, not just the theory', 'Remember people need warmth, not only logic'],
+    compatible: ['ENTJ', 'ENFJ', 'INFJ'],
+  },
+  ENTJ: {
+    code: 'ENTJ',
+    nickname: 'The Trailblazer',
+    emoji: '🚀',
+    tagline: 'Sees a mountain, schedules the summit for Tuesday.',
+    gradient: ['#ff5fa2', '#7c5cff'],
+    blurb:
+      'A natural commander of momentum, you turn vision into plans and plans into results. You thrive on challenge, lead from the front, and have little patience for dithering.',
+    strengths: ['Decisive and driven', 'Natural leader', 'Turns chaos into a roadmap'],
+    blindSpots: ['Can steamroll quieter voices', 'Mistakes bluntness for clarity'],
+    growth: ['Pause to ask, not just tell', 'Celebrate the team, not only the target'],
+    compatible: ['INTP', 'INFP', 'ENFP'],
+  },
+  ENTP: {
+    code: 'ENTP',
+    nickname: 'The Spark Machine',
+    emoji: '⚡',
+    tagline: 'Will argue both sides just to watch the sparks fly.',
+    gradient: ['#ffd23f', '#ff5fa2'],
+    blurb:
+      'Quick-witted and endlessly inventive, you treat life as a brainstorm. You love debate, hate boredom, and can find a clever angle on almost anything.',
+    strengths: ['Idea fountain', 'Charismatic and quick', 'Thrives on a good challenge'],
+    blindSpots: ['Starts more than it finishes', 'Debates can bruise feelings'],
+    growth: ['Pick one idea and see it through', 'Read the room before the rebuttal'],
+    compatible: ['INFJ', 'INTJ', 'ENFJ'],
+  },
+  INFJ: {
+    code: 'INFJ',
+    nickname: 'The Quiet Visionary',
+    emoji: '🌙',
+    tagline: 'Soft voice, deep current, surprisingly stubborn ideals.',
+    gradient: ['#7c5cff', '#2ee6c4'],
+    blurb:
+      'You feel things deeply and see meaning everywhere. Idealistic but private, you quietly champion people and causes, guided by an inner compass few others can see.',
+    strengths: ['Deeply empathetic', 'Insightful about people', 'Quietly principled'],
+    blindSpots: ['Burns out by over-giving', 'Holds others to private ideals'],
+    growth: ['Voice your needs out loud', 'Let people in before you are at empty'],
+    compatible: ['ENTP', 'ENFP', 'INTJ'],
+  },
+  INFP: {
+    code: 'INFP',
+    nickname: 'The Dreamy Idealist',
+    emoji: '🦋',
+    tagline: 'A soft heart with a quietly unbreakable set of values.',
+    gradient: ['#ff9a3d', '#ff5fa2'],
+    blurb:
+      'Gentle, imaginative, and guided by deep values, you want the world — and the people in it — to be a little kinder. Behind the daydreams is a will of iron about what matters.',
+    strengths: ['Big-hearted and authentic', 'Richly imaginative', 'Loyal to its values'],
+    blindSpots: ['Idealism vs. reality friction', 'Avoids conflict until it boils over'],
+    growth: ['Turn dreams into small first steps', 'Speak up before resentment builds'],
+    compatible: ['ENFJ', 'ENTJ', 'INFJ'],
+  },
+  ENFJ: {
+    code: 'ENFJ',
+    nickname: 'The Warm Leader',
+    emoji: '🌻',
+    tagline: 'Knows your potential before you do — and roots for it.',
+    gradient: ['#ffd23f', '#ff9a3d'],
+    blurb:
+      'You lead with heart, lifting people up and weaving them together. Warm, persuasive, and tuned to everyone’s feelings, you make groups feel like a team.',
+    strengths: ['Inspiring and supportive', 'Reads people beautifully', 'Builds real community'],
+    blindSpots: ['Neglects own needs', 'Takes criticism too personally'],
+    growth: ['Schedule care for yourself too', 'Not everyone needs fixing'],
+    compatible: ['INFP', 'ISFP', 'INTP'],
+  },
+  ENFP: {
+    code: 'ENFP',
+    nickname: 'The Confetti Cannon',
+    emoji: '🎉',
+    tagline: 'Five new passions before breakfast, all of them sincere.',
+    gradient: ['#ff5fa2', '#ffd23f'],
+    blurb:
+      'A burst of warmth, ideas, and possibility, you make life feel like an adventure. Curious about everyone and everything, you connect dots — and people — effortlessly.',
+    strengths: ['Infectious enthusiasm', 'Sees potential everywhere', 'Warm and spontaneous'],
+    blindSpots: ['Loses steam on routine', 'Over-commits in the excitement'],
+    growth: ['Protect a little follow-through energy', 'Rest before the tank hits empty'],
+    compatible: ['INTJ', 'INFJ', 'ENTJ'],
+  },
+  ISTJ: {
+    code: 'ISTJ',
+    nickname: 'The Steady Keeper',
+    emoji: '🧱',
+    tagline: 'If they said they would, consider it already done.',
+    gradient: ['#4cc9ff', '#2b1840'],
+    blurb:
+      'Dependable to the core, you keep the world running on facts, order, and follow-through. People trust you because your word is a guarantee.',
+    strengths: ['Reliable and thorough', 'Calm under pressure', 'Respects facts and order'],
+    blindSpots: ['Resistant to sudden change', 'Can seem rigid'],
+    growth: ['Try the new way once', 'Voice appreciation out loud'],
+    compatible: ['ESFP', 'ESTP', 'ISFJ'],
+  },
+  ISFJ: {
+    code: 'ISFJ',
+    nickname: 'The Cozy Guardian',
+    emoji: '🧸',
+    tagline: 'Remembers your allergy, your birthday, and your bad day.',
+    gradient: ['#2ee6c4', '#4cc9ff'],
+    blurb:
+      'Quietly devoted, you take care of the people and details others overlook. Warm and practical, you create the kind of steady comfort everyone leans on.',
+    strengths: ['Loyal and caring', 'Wonderfully attentive', 'Practical helper'],
+    blindSpots: ['Says yes too often', 'Undersells own needs'],
+    growth: ['Practice the gentle "no"', 'Accept help, not only give it'],
+    compatible: ['ESTP', 'ESFP', 'ISTJ'],
+  },
+  ESTJ: {
+    code: 'ESTJ',
+    nickname: 'The Get-It-Done Captain',
+    emoji: '📋',
+    tagline: 'Hands them a plan, a deadline, and a clipboard of joy.',
+    gradient: ['#ff9a3d', '#ff5fa2'],
+    blurb:
+      'Organized and decisive, you bring order to the room and keep everyone moving. You value structure, fairness, and a job done properly.',
+    strengths: ['Organized and decisive', 'Natural coordinator', 'Dependable under load'],
+    blindSpots: ['Can be controlling', 'Quick to judge "inefficiency"'],
+    growth: ['Leave room for other styles', 'Soften the delivery'],
+    compatible: ['ISFP', 'ISTP', 'ESFJ'],
+  },
+  ESFJ: {
+    code: 'ESFJ',
+    nickname: 'The Heart of the Party',
+    emoji: '🎀',
+    tagline: 'Hosts the gathering and makes sure no one feels left out.',
+    gradient: ['#ff5fa2', '#ff9a3d'],
+    blurb:
+      'Warm, sociable, and wonderfully attentive, you keep people connected and cared for. You thrive on harmony and the joy of bringing folks together.',
+    strengths: ['Warm and welcoming', 'Highly attentive', 'Builds belonging'],
+    blindSpots: ['Sensitive to disapproval', 'Avoids necessary conflict'],
+    growth: ['Your worth is not others’ approval', 'Address tension early'],
+    compatible: ['ISTP', 'ISFP', 'ESTJ'],
+  },
+  ISTP: {
+    code: 'ISTP',
+    nickname: 'The Cool Fixer',
+    emoji: '🔧',
+    tagline: 'Calm in a crisis, already halfway to a solution.',
+    gradient: ['#4cc9ff', '#2ee6c4'],
+    blurb:
+      'Hands-on and unflappable, you love taking things apart to see how they work. Quiet but quick, you solve real problems with calm, practical skill.',
+    strengths: ['Cool under pressure', 'Hands-on problem solver', 'Adaptable and practical'],
+    blindSpots: ['Hard to read emotionally', 'Bores of long-term plans'],
+    growth: ['Share what’s going on inside', 'Commit beyond the immediate fix'],
+    compatible: ['ESFJ', 'ESTJ', 'ENFP'],
+  },
+  ISFP: {
+    code: 'ISFP',
+    nickname: 'The Free Spirit',
+    emoji: '🎨',
+    tagline: 'Lives in color, allergic to being boxed in.',
+    gradient: ['#ff9a3d', '#2ee6c4'],
+    blurb:
+      'Gentle, artistic, and quietly bold, you live by what feels true and beautiful. You savor the moment and express yourself in your own unmistakable way.',
+    strengths: ['Creative and authentic', 'Warm and easygoing', 'Lives in the moment'],
+    blindSpots: ['Avoids long-term planning', 'Takes criticism to heart'],
+    growth: ['A little structure frees creativity', 'Critique is not rejection'],
+    compatible: ['ENFJ', 'ESFJ', 'ESTJ'],
+  },
+  ESTP: {
+    code: 'ESTP',
+    nickname: 'The Daredevil',
+    emoji: '🛹',
+    tagline: 'Why think about it when you could just try it?',
+    gradient: ['#ffd23f', '#ff9a3d'],
+    blurb:
+      'Bold, energetic, and gloriously in the moment, you learn by doing and thrive where the action is. You read a room fast and act faster.',
+    strengths: ['Bold and energetic', 'Thinks on its feet', 'Persuasive and fun'],
+    blindSpots: ['Leaps before looking', 'Restless with routine'],
+    growth: ['Pause for the long view', 'Patience with slower paces'],
+    compatible: ['ISFJ', 'ISTJ', 'INFJ'],
+  },
+  ESFP: {
+    code: 'ESFP',
+    nickname: 'The Showstopper',
+    emoji: '🎤',
+    tagline: 'Turns an ordinary Tuesday into an event worth attending.',
+    gradient: ['#ff5fa2', '#ffd23f'],
+    blurb:
+      'A spotlight of warmth and spontaneity, you make life more fun for everyone around you. Generous and playful, you live fully and pull others into the joy.',
+    strengths: ['Joyful and spontaneous', 'Generous and warm', 'Brings people together'],
+    blindSpots: ['Avoids the boring-but-important', 'Lives a bit too in the now'],
+    growth: ['Future-you needs a plan too', 'Sit with quiet, not just buzz'],
+    compatible: ['ISTJ', 'ISFJ', 'INTJ'],
+  },
+}
+
+export const ALL_TYPES = Object.keys(PROFILES)

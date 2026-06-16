@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Baloo 2', 'Quicksand', system-ui, sans-serif;
+  --font-sans: 'Quicksand', system-ui, sans-serif;
+
+  /* candy-pop palette */
+  --color-bubblegum: #ff5fa2;
+  --color-tangerine: #ff9a3d;
+  --color-grape: #7c5cff;
+  --color-mint: #2ee6c4;
+  --color-sky: #4cc9ff;
+  --color-lemon: #ffd23f;
+  --color-cream: #fff7f2;
+  --color-ink: #2b1840;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-cream);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Respect reduced-motion: kill the big background drifts */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* fun utility: thick playful focus ring for a11y */
+@layer utilities {
+  .ring-fun:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 3px #fff,
+      0 0 0 7px var(--color-grape);
+  }
+
+  /* Padding that also clears device safe areas (notch, home indicator, and
+     landscape rounded corners). Override the base spacing per-element via the
+     --sx / --sy custom properties. Requires viewport-fit=cover (set in index.html). */
+  .safe-x {
+    padding-left: max(var(--sx, 1.25rem), env(safe-area-inset-left));
+    padding-right: max(var(--sx, 1.25rem), env(safe-area-inset-right));
+  }
+  .safe-y {
+    padding-top: max(var(--sy, 1.5rem), env(safe-area-inset-top));
+    padding-bottom: max(var(--sy, 1.5rem), env(safe-area-inset-bottom));
+  }
+}
