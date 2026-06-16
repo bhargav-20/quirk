@@ -33,10 +33,10 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Pages is already enabled (source: GitHub Actions), so this just reads the
+      # existing configuration — no creation needed (the default token can't create it).
       - name: Configure Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
