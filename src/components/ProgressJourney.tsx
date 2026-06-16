@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { LITE } from '../lib/perf'
 
 interface Props {
   current: number // 1-based
@@ -29,10 +30,10 @@ export function ProgressJourney({ current, total }: Props) {
         <motion.div
           className="absolute top-1/2 text-lg"
           style={{ translateY: '-50%' }}
-          animate={{ left: `calc(${pct}% - 6px)`, y: [0, -4, 0] }}
+          animate={LITE ? { left: `calc(${pct}% - 6px)` } : { left: `calc(${pct}% - 6px)`, y: [0, -4, 0] }}
           transition={{
             left: { type: 'spring', stiffness: 120, damping: 20 },
-            y: { duration: 0.8, repeat: Infinity, ease: 'easeInOut' },
+            ...(LITE ? {} : { y: { duration: 0.8, repeat: Infinity, ease: 'easeInOut' } }),
           }}
         >
           🚀

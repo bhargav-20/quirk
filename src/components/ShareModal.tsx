@@ -98,7 +98,7 @@ export function ShareModal({ open, onClose, result, profile }: Props) {
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
-          <div className="absolute inset-0 bg-ink/55 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-ink/60" />
           <motion.div
             role="dialog"
             aria-modal="true"

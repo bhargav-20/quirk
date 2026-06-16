@@ -20,7 +20,7 @@ export function Disclaimer({ open, onClose }: Props) {
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
-          <div className="absolute inset-0 bg-ink/50 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-ink/60" />
           <motion.div
             role="dialog"
             aria-modal="true"

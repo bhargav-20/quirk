@@ -1,7 +1,12 @@
 import { motion } from 'motion/react'
+import { LITE } from '../lib/perf'
 
 // Drifting candy-pop blobs behind everything. Pure decoration; pointer-events off.
-// prefers-reduced-motion is handled globally in index.css (kills the drift).
+//
+// On lite devices (touch / low-power / reduced-motion) we render a STATIC CSS
+// radial-gradient instead — it looks similar but uses no `filter: blur` and no
+// animation, so there is zero per-frame GPU cost. Animating a blurred layer forces
+// re-rasterization every frame and is what makes weak phones stutter.
 
 const BLOBS = [
   { color: '#ff5fa2', size: 460, x: '-10%', y: '-12%', dur: 22 },
@@ -11,7 +16,24 @@ const BLOBS = [
   { color: '#4cc9ff', size: 300, x: '40%', y: '40%', dur: 28 },
 ]
 
+const LITE_GRADIENT =
+  'radial-gradient(55% 50% at 8% 0%, rgba(255,95,162,0.40), transparent 70%),' +
+  'radial-gradient(50% 45% at 92% 6%, rgba(255,210,63,0.38), transparent 70%),' +
+  'radial-gradient(55% 55% at 85% 82%, rgba(124,92,255,0.38), transparent 70%),' +
+  'radial-gradient(50% 50% at 4% 88%, rgba(46,230,196,0.36), transparent 70%),' +
+  'var(--color-cream)'
+
 export function Background() {
+  if (LITE) {
+    return (
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 -z-10"
+        style={{ background: LITE_GRADIENT }}
+      />
+    )
+  }
+
   return (
     <div
       aria-hidden
@@ -28,20 +50,14 @@ export function Background() {
             top: b.y,
             background: b.color,
             opacity: 0.4,
+            willChange: 'transform',
           }}
-          animate={{
-            x: [0, 30, -20, 0],
-            y: [0, -25, 20, 0],
-            scale: [1, 1.08, 0.96, 1],
-          }}
-          transition={{
-            duration: b.dur,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
+          // translate only (no scale) so the rasterized blur layer is just
+          // composited each frame rather than re-blurred
+          animate={{ x: [0, 30, -20, 0], y: [0, -25, 20, 0] }}
+          transition={{ duration: b.dur, repeat: Infinity, ease: 'easeInOut' }}
         />
       ))}
-      {/* subtle grain/wash to keep text legible */}
       <div className="absolute inset-0 bg-cream/30" />
     </div>
   )

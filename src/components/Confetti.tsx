@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { useMemo } from 'react'
+import { LITE } from '../lib/perf'
 
 // Lightweight confetti burst — a handful of colored chips that fling out and fall.
 // Deterministic per-mount (seeded by index) so it works without Math.random anxiety.
@@ -10,7 +11,7 @@ interface Props {
   count?: number
 }
 
-export function Confetti({ count = 36 }: Props) {
+export function Confetti({ count = LITE ? 16 : 36 }: Props) {
   const pieces = useMemo(() => {
     return Array.from({ length: count }, (_, i) => {
       // pseudo-random but stable spread

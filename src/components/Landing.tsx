@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import type { HistoryEntry } from '../types'
 import { PROFILES } from '../data/profiles'
 import { DISCLAIMER_SHORT } from '../data/disclaimer'
+import { LITE } from '../lib/perf'
 
 interface Props {
   onStart: () => void
@@ -24,13 +25,17 @@ export function Landing({ onStart, onShowDisclaimer, history }: Props) {
             key={i}
             className="absolute text-3xl sm:text-4xl"
             style={{ left: `${6 + i * 12}%`, top: '50%' }}
-            animate={{ y: [0, -14, 0], rotate: [0, 8, -8, 0] }}
-            transition={{
-              duration: 2.4 + (i % 4) * 0.4,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: i * 0.15,
-            }}
+            animate={LITE ? undefined : { y: [0, -14, 0], rotate: [0, 8, -8, 0] }}
+            transition={
+              LITE
+                ? undefined
+                : {
+                    duration: 2.4 + (i % 4) * 0.4,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: i * 0.15,
+                  }
+            }
           >
             {e}
           </motion.span>

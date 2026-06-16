@@ -173,7 +173,7 @@ export function Results({ result, onRetake, onHome, onShowDisclaimer, shared }: 
 
 function Card({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-3xl bg-white/90 p-6 shadow-[0_16px_40px_-22px_rgba(43,24,64,0.5)] backdrop-blur">
+    <div className="rounded-3xl bg-white/95 p-6 shadow-[0_16px_40px_-22px_rgba(43,24,64,0.5)]">
       {children}
     </div>
   )
