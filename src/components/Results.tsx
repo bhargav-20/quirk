@@ -4,7 +4,7 @@ import type { QuizResult } from '../types'
 import { PROFILES } from '../data/profiles'
 import { ConfidenceBars } from './ConfidenceBars'
 import { Confetti } from './Confetti'
-import { buildShareUrl } from '../lib/share'
+import { ShareModal } from './ShareModal'
 import { DISCLAIMER_SHORT } from '../data/disclaimer'
 
 interface Props {
@@ -16,23 +16,7 @@ interface Props {
 
 export function Results({ result, onRetake, onShowDisclaimer, shared }: Props) {
   const profile = PROFILES[result.type]
-  const [copied, setCopied] = useState(false)
-
-  async function share() {
-    const url = buildShareUrl(result)
-    const text = `I got ${result.type} — ${profile.nickname} ${profile.emoji} on Quirk!`
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'Quirk', text, url })
-        return
-      }
-      await navigator.clipboard.writeText(url)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 2000)
-    } catch {
-      /* user cancelled share sheet — ignore */
-    }
-  }
+  const [shareOpen, setShareOpen] = useState(false)
 
   return (
     <div className="safe-x safe-y relative mx-auto w-full max-w-2xl [--sy:2.5rem]">
@@ -148,10 +132,10 @@ export function Results({ result, onRetake, onShowDisclaimer, shared }: Props) {
         {/* Actions */}
         <div className="flex flex-wrap justify-center gap-3">
           <button
-            onClick={share}
+            onClick={() => setShareOpen(true)}
             className="ring-fun rounded-full bg-grape px-6 py-3 font-extrabold text-white shadow-lg transition hover:brightness-110 active:scale-95"
           >
-            {copied ? '🔗 Link copied!' : '✨ Share my type'}
+            ✨ Share my type
           </button>
           <button
             onClick={onRetake}
@@ -168,6 +152,13 @@ export function Results({ result, onRetake, onShowDisclaimer, shared }: Props) {
           {DISCLAIMER_SHORT}
         </button>
       </motion.div>
+
+      <ShareModal
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+        result={result}
+        profile={profile}
+      />
     </div>
   )
 }
