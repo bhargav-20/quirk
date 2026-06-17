@@ -24,6 +24,9 @@
   body,
   #root {
     height: 100%;
+    /* never allow horizontal scroll/overflow — keeps viewport-anchored overlays
+       stable while cards translate horizontally */
+    overflow-x: clip;
   }
 
   body {

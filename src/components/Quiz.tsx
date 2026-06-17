@@ -86,7 +86,9 @@ export function Quiz({ onComplete, onExit }: Props) {
         </div>
       </div>
 
-      <div className="relative flex flex-1 items-center justify-center">
+      {/* clip horizontal card motion (enter/exit slide + drag) so it never creates
+          document-level overflow that would shift the viewport-anchored feedback */}
+      <div className="relative flex flex-1 items-center justify-center overflow-x-clip">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={question.id}

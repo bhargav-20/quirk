@@ -99,22 +99,26 @@ export function QuestionCard({ question, index, value, onAnswer }: Props) {
         </p>
       </motion.div>
 
-      {/* viewport-anchored live feedback — stays visible while the card moves */}
+      {/* viewport-anchored live feedback — pinned to the TOP so a thumb can't cover
+          it, and a single persistent pill (no remount on intensity change) so its
+          width MORPHS smoothly between "agree" and "strongly agree" via `layout`. */}
       {createPortal(
-        <div className="pointer-events-none fixed inset-x-0 bottom-[calc(1.5rem+env(safe-area-inset-bottom))] z-40 flex justify-center px-4">
+        <div className="pointer-events-none fixed inset-x-0 top-[calc(env(safe-area-inset-top)+5.25rem)] z-40 flex justify-center px-4">
           <AnimatePresence>
             {stamp && (
               <motion.div
-                key={hint}
-                initial={{ scale: 0.5, opacity: 0, y: 12 }}
-                animate={{ scale: stamp.strong ? 1.12 : 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.6, opacity: 0, y: 12 }}
-                transition={{ type: 'spring', stiffness: 500, damping: 24 }}
-                className={`rounded-full px-6 py-3 font-extrabold shadow-xl ${
+                layout
+                initial={{ opacity: 0, y: -12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                className={`flex items-center rounded-full px-6 py-3 font-extrabold shadow-xl ${
                   stamp.agree ? 'bg-mint text-ink' : 'bg-grape text-white'
                 } ${stamp.strong ? 'text-lg' : 'text-base'}`}
               >
-                {stamp.text}
+                <motion.span layout="position" className="whitespace-nowrap">
+                  {stamp.text}
+                </motion.span>
               </motion.div>
             )}
           </AnimatePresence>
