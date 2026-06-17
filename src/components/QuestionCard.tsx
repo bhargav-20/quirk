@@ -1,4 +1,5 @@
-import { motion, useMotionValue, useTransform } from 'motion/react'
+import { AnimatePresence, motion, useMotionValue, useTransform } from 'motion/react'
+import { createPortal } from 'react-dom'
 import { useRef, useState } from 'react'
 import type { Likert, Question } from '../types'
 import { LikertScale } from './LikertScale'
@@ -27,14 +28,24 @@ function bucket(offset: number): Likert | 0 {
   return 0
 }
 
+const STAMP: Record<Exclude<Likert, 0 | 3>, { text: string; agree: boolean; strong: boolean }> = {
+  5: { text: 'STRONGLY AGREE 💚', agree: true, strong: true },
+  4: { text: 'AGREE 💚', agree: true, strong: false },
+  2: { text: '💜 DISAGREE', agree: false, strong: false },
+  1: { text: '💜 STRONGLY DISAGREE', agree: false, strong: true },
+}
+
 // One question card. Drag it like a deck card for a quick answer, or tap the dots
 // for a precise one. Either way it commits via onAnswer.
+//
+// The live "what will I pick" feedback is a stamp anchored to the VIEWPORT (portaled
+// to <body> so the card's own transforms can't trap its fixed position) — it stays
+// put and readable while the card slides away under your finger.
 export function QuestionCard({ question, index, value, onAnswer }: Props) {
   const accent = ACCENTS[index % ACCENTS.length]
   const x = useMotionValue(0)
   const rotate = useTransform(x, [-260, 260], [-13, 13])
 
-  // What a release right now would commit — shown live so the swipe is legible.
   const [hint, setHint] = useState<Likert | 0>(0)
   const hintRef = useRef<Likert | 0>(0)
 
@@ -55,64 +66,61 @@ export function QuestionCard({ question, index, value, onAnswer }: Props) {
     if (b) onAnswer(b)
   }
 
-  const agreeLabel = hint === 5 ? 'STRONGLY AGREE 💚' : hint === 4 ? 'AGREE 💚' : null
-  const disagreeLabel =
-    hint === 1 ? '💜 STRONGLY DISAGREE' : hint === 2 ? '💜 DISAGREE' : null
+  const stamp = hint === 0 ? null : STAMP[hint as Exclude<Likert, 0 | 3>]
 
   return (
-    <motion.div
-      className="relative w-full max-w-md cursor-grab touch-pan-y rounded-[2rem] bg-white p-7 shadow-[0_24px_60px_-20px_rgba(43,24,64,0.45)] active:cursor-grabbing sm:p-9"
-      style={{ x, rotate, borderTop: `8px solid ${accent}` }}
-      drag="x"
-      dragSnapToOrigin
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.8}
-      onDrag={handleDrag}
-      onDragEnd={handleDragEnd}
-      whileTap={{ scale: 0.99 }}
-    >
-      {/* live drag hint — shows exactly what releasing now will pick */}
-      <div className="pointer-events-none absolute inset-x-5 top-5 flex justify-between">
-        {disagreeLabel ? (
-          <motion.span
-            initial={{ scale: 0.6, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="rounded-full bg-grape px-3 py-1 text-sm font-extrabold text-white shadow"
-          >
-            {disagreeLabel}
-          </motion.span>
-        ) : (
-          <span />
-        )}
-        {agreeLabel ? (
-          <motion.span
-            initial={{ scale: 0.6, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="rounded-full bg-mint px-3 py-1 text-sm font-extrabold text-ink shadow"
-          >
-            {agreeLabel}
-          </motion.span>
-        ) : (
-          <span />
-        )}
-      </div>
-
-      <div
-        className="mb-5 grid h-12 w-12 place-items-center rounded-2xl text-lg font-extrabold text-white"
-        style={{ background: accent }}
+    <>
+      <motion.div
+        className="relative w-full max-w-md cursor-grab touch-pan-y rounded-[2rem] bg-white p-7 shadow-[0_24px_60px_-20px_rgba(43,24,64,0.45)] active:cursor-grabbing sm:p-9"
+        style={{ x, rotate, borderTop: `8px solid ${accent}` }}
+        drag="x"
+        dragSnapToOrigin
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.8}
+        onDrag={handleDrag}
+        onDragEnd={handleDragEnd}
+        whileTap={{ scale: 0.99 }}
       >
-        {question.id}
-      </div>
+        <div
+          className="mb-5 grid h-12 w-12 place-items-center rounded-2xl text-lg font-extrabold text-white"
+          style={{ background: accent }}
+        >
+          {question.id}
+        </div>
 
-      <p className="font-display mb-8 text-2xl font-bold leading-snug text-ink sm:text-[1.75rem]">
-        {question.text}
-      </p>
+        <p className="font-display mb-8 text-2xl font-bold leading-snug text-ink sm:text-[1.75rem]">
+          {question.text}
+        </p>
 
-      <LikertScale value={value} onChange={onAnswer} />
+        <LikertScale value={value} onChange={onAnswer} />
 
-      <p className="mt-5 text-center text-xs font-medium text-ink/40">
-        Tap a dot, or swipe → to agree, ← to disagree (further = stronger)
-      </p>
-    </motion.div>
+        <p className="mt-5 text-center text-xs font-medium text-ink/40">
+          Tap a dot, or swipe → to agree, ← to disagree (further = stronger)
+        </p>
+      </motion.div>
+
+      {/* viewport-anchored live feedback — stays visible while the card moves */}
+      {createPortal(
+        <div className="pointer-events-none fixed inset-x-0 bottom-[calc(1.5rem+env(safe-area-inset-bottom))] z-40 flex justify-center px-4">
+          <AnimatePresence>
+            {stamp && (
+              <motion.div
+                key={hint}
+                initial={{ scale: 0.5, opacity: 0, y: 12 }}
+                animate={{ scale: stamp.strong ? 1.12 : 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.6, opacity: 0, y: 12 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 24 }}
+                className={`rounded-full px-6 py-3 font-extrabold shadow-xl ${
+                  stamp.agree ? 'bg-mint text-ink' : 'bg-grape text-white'
+                } ${stamp.strong ? 'text-lg' : 'text-base'}`}
+              >
+                {stamp.text}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>,
+        document.body,
+      )}
+    </>
   )
 }
